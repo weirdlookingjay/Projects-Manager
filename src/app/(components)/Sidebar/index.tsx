@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/redux";
 import { setIsSidebarCollapsed } from "@/state";
-import { Home, LockIcon, LucideIcon, X } from "lucide-react";
+import { AlertCircle, AlertOctagon, AlertTriangle, Briefcase, ChevronDown, ChevronUp, Home, Layers3, LockIcon, LucideIcon, Search, Settings, ShieldAlert, User, Users, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -50,7 +50,44 @@ const Sidebar = () => {
                 {/* NAVBAR LINKS */}
                 <nav className="z-10 w-full">
                     <SidebarLink icon={Home} label="Home" href="/" />
+                    <SidebarLink icon={Briefcase} label="Timeline" href="/tmeline" />
+                    <SidebarLink icon={Search} label="Search" href="/search" />
+                    <SidebarLink icon={Settings} label="Settings" href="/settings" />
+                    <SidebarLink icon={User} label="Users" href="/users" />
+                    <SidebarLink icon={Users} label="Teams" href="/teams" />
                 </nav>
+
+
+                {/* PPROJECTS LINKS */}
+                <button onClick={() => setShowProjects((prev) => !prev)}
+                    className="flex w-full items-center justify-between px-8 py-3 text-gray-500">
+                    <span className="">Projects</span>
+                    {showProjects ? (
+                        <ChevronUp className="h-5 w-5" />
+                    ) : (
+                        <ChevronDown className="h-5 w-5" />
+                    )}
+                </button>
+
+                {/* PRIORITES LIST */}
+                <button onClick={() => setShowPriority((prev) => !prev)}
+                    className="flex w-full items-center justify-between px-8 py-3 text-gray-500">
+                    <span className="">Priority</span>
+                    {showPriority ? (
+                        <ChevronUp className="h-5 w-5" />
+                    ) : (
+                        <ChevronDown className="h-5 w-5" />
+                    )}
+                </button>
+                {showPriority && (
+                    <>
+                        <SidebarLink icon={AlertCircle} label="Urgent" href="/priority/urgent" />
+                        <SidebarLink icon={ShieldAlert} label="High" href="/priority/high" />
+                        <SidebarLink icon={AlertTriangle} label="Medium" href="/priority/medium" />
+                        <SidebarLink icon={AlertOctagon} label="Low" href="/priority/low" />
+                        <SidebarLink icon={Layers3} label="Backlog" href="/priority/backlog" />
+                    </>
+                )}
             </div>
         </div>
     );
@@ -66,24 +103,18 @@ interface SidebarLinkProps {
 const SidebarLink = ({
     href,
     icon: Icon,
-    label,
-    isCollapsed,
+    label
 }: SidebarLinkProps) => {
     const pathname = usePathname();
     const isActive =
         pathname === href || (pathname === "/" && href === "/dashboard");
-    const screenWidth = window.innerWidth;
-
-    const dispatch = useAppDispatch();
-    const isSidebarCollapsed = useAppSelector(
-        (state) => state.global.isSidebarCollapsed,
-    );
 
     return (
         <Link href={href} className="w-full">
             <div
-                className={`hover:bg-gra-100 relative flex cursor-pointer items-center gap-3 transition-colors 
-            dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""}`}
+                className={`hover:bg-gray-100 relative flex cursor-pointer items-center gap-3 transition-colors 
+            dark:bg-black dark:hover:bg-gray-700 ${isActive ? "bg-gray-100 text-white dark:bg-gray-600" : ""} 
+            justify-start px-8 py-3`}
             >
                 {isActive && (
                     <div className="absolute left-0 top-0 h-[100%] w-[5px] bg-blue-200" />
