@@ -9,6 +9,13 @@ export interface Project {
 }
 
 export enum Status {
+  ToDo = "To Do",
+  WorkInProgress = "Work In Progress",
+  UnderReview = "Under Review",
+  Completed = "Completed",
+}
+
+export enum Priority {
   Urgent = "Urgent",
   High = "High",
   Medium = "Medium",
@@ -16,25 +23,18 @@ export enum Status {
   Backlog = "Backlog",
 }
 
-export enum Priority {
-  ToDo = "To Do",
-  WorkInProgress = "Work In Progress",
-  UnderReview = "Under Review",
-  Completed = "Completed",
-}
-
 export interface User {
   userId?: number;
   username: string;
   email: string;
-  profilePicture?: string;
+  profilePictureUrl?: string;
   cognitoId?: string;
   teamId?: number;
 }
 
 export interface Attachment {
   id: number;
-  fileUrl: string;
+  fileURL: string;
   fileName: string;
   taskId: number;
   uploadedById: number;
@@ -96,11 +96,11 @@ export const api = createApi({
     }),
     updateTaskStatus: build.mutation<Task, { taskId: number; status: string }>({
       query: ({ taskId, status }) => ({
-        url: `tasks/${taskId}/${status}`,
+        url: `tasks/${taskId}/status`,
         method: "PATCH",
         body: { status },
       }),
-      invalidatesTags: (rsult, error, { taskId }) => [
+      invalidatesTags: (result, error, { taskId }) => [
         { type: "Tasks", id: taskId },
       ],
     }),
